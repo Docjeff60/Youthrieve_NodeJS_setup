@@ -77,15 +77,19 @@ app.get("/drugs/antibiotics", (request, response) => {
 })
 
 
+
+
+
 //QUESTION 2:
 //2.GET /drugs/names
 //Return an array of all drug names converted to lowercase.
 
-app.get("/drugs_lowercase", (req, res) => {
+app.get("/drugs/name_lowercase", (req, res) => {
   const getDrugsLowercase = drugs.map(drug => drug.name.toLowerCase());
 
   res.json(getDrugsLowercase)
 })
+
 
 
 
@@ -95,7 +99,7 @@ app.get("/drugs_lowercase", (req, res) => {
 //Accept a category in the body and return all drugs under that category.
 //Example body: { "category": "Antibiotic" }
 
-app.post("/drugs/categorypost", (req, res) => {
+app.post("/drugs/by-category", (req, res) => {
   //extract the category from request body
   const thecategory = req.body.category;
 
@@ -108,6 +112,71 @@ app.post("/drugs/categorypost", (req, res) => {
     drugs: drugsbycategory
   })
 })
+
+
+
+
+
+
+
+//QUESTION 4:
+//4.GET /drugs/names-manufacturers
+//Return an array of objects showing each drug’s name and manufacturer.
+
+
+app.get("/drugs/names-manufacturers", (req, res) => {
+  const namesAndManuf = drugs.map((drug) => {
+    return {
+      name: drug.name,
+      manufacturer: drug.manufacturer
+    };
+  });
+  res.json(namesAndManuf)
+});
+
+
+
+
+
+//QUESTION 5:
+//5.GET /drugs/prescription
+//Return all drugs where isPrescriptionOnly is true.
+
+app.get("/drugs/prescription", (req, res) => {
+  const drugsWithPrescription = drugs.filter(drug => drug.isPrescriptionOnly === true);
+
+  res.json({
+    message: `Found ${drugsWithPrescription.length} prescription-only drugs`,
+    drugs: drugsWithPrescription
+  });
+});
+
+
+
+
+
+
+
+
+//QUESTION 6:
+//6. GET /drugs/formatted
+//Return a new array where each item is a string like:
+//"Drug: [name] - [dosageMg]mg"
+
+app.get("/drugs/formatted", (req, res) => {
+  const drugDosage = drugs.map(drug => `Drug: ${drug.name} - ${drug.dosageMg}mg`);
+
+  res.json(drugDosage)
+})
+
+
+
+
+
+//QUESTION 7:
+//7.GET /drugs/low-stock
+//Return all drugs where stock is less than 50.
+
 
 
 
