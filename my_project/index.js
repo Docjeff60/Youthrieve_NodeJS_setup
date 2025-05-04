@@ -103,6 +103,10 @@ app.post("/drugs/by-category", (req, res) => {
   //extract the category from request body
   const thecategory = req.body.category;
 
+  if(!thecategory) {
+    return res.json({message: "Please enter a category..."})
+  }
+
   //filter drugs by the requested category
   const drugsbycategory = drugs.filter(drug => drug.category === thecategory);
   
@@ -110,8 +114,8 @@ app.post("/drugs/by-category", (req, res) => {
   res.json({
     message: `Found ${drugsbycategory.length} drugs in category: ${thecategory}`,
     drugs: drugsbycategory
-  })
-})
+  });
+});
 
 
 
@@ -177,8 +181,62 @@ app.get("/drugs/formatted", (req, res) => {
 //7.GET /drugs/low-stock
 //Return all drugs where stock is less than 50.
 
+app.get("/drugs/low-stock", (req, res) => {
+  const lowStockDrugs = drugs.filter(drug => drug.stock <= 50);
+
+  res.json(lowStockDrugs)
+})
 
 
+
+
+
+
+
+//QUESTION 8:
+//8.GET /drugs/non-prescription
+//Return all drugs where isPrescriptionOnly is false.
+
+app.get("/drugs/non-prescription", (req, res) => {
+  const nonPrescription = drugs.filter(drug => drug.isPrescriptionOnly === false)
+
+  res.json(nonPrescription)
+});
+
+
+
+
+
+
+//QUESTION 9:
+//9.POST /drugs/manufacturer-count
+//Accept a manufacturer in the body and return how many drugs are produced by that manufacturer.
+//Example body: { "manufacturer": "Pfizer" }
+
+app.post("/drugs/manufacturer-count", (req, res) => {
+  const { manufacturer } = req.body;
+  const countManufacturer = drugs.filter(drug => drug.manufacturer === manufacturer);
+
+  res.json({count: countManufacturer.length, countManufacturer });
+})
+
+
+
+
+
+
+
+
+
+//QUESTION 10:
+//10. GET /drugs/count-analgesics
+//Count and return how many drugs have the category "Analgesic".
+
+app.get("/drugs/count-analgesics", (req, res) => {
+  const countAnalgesic = drugs.filter(drug => drug.category === "Analgesic");
+
+  res.json({count: countAnalgesic.length, countAnalgesic})
+})
 
 
 
